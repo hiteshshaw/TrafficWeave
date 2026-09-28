@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="tile" x1="4" y1="3" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1d4ed8"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="route-cyan" x1="10" y1="15" x2="38" y2="33" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a5f3fc"/>
+      <stop offset="1" stop-color="#67e8f9"/>
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="14" fill="url(#tile)"/>
+  <rect x=".5" y=".5" width="47" height="47" rx="13.5" stroke="#fff" stroke-opacity=".16"/>
+
+  <!-- Two delivery paths weaving through a shared road network. -->
+  <path d="M9 15h6c6 0 6 18 12 18h5c4 0 4-2 7-2" stroke="#082f49" stroke-opacity=".42" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 33h6c6 0 6-18 12-18h5c4 0 4 2 7 2" stroke="#082f49" stroke-opacity=".42" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 15h6c6 0 6 18 12 18h5c4 0 4-2 7-2" stroke="url(#route-cyan)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 33h6c6 0 6-18 12-18h5c4 0 4 2 7 2" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="21" cy="24" r="3.1" fill="#0f4c67" stroke="#e0f2fe" stroke-width="1.4"/>
+  <circle cx="21" cy="24" r="1" fill="#67e8f9"/>
+  <circle cx="9" cy="15" r="2.1" fill="#fff"/>
+  <circle cx="9" cy="33" r="2.1" fill="#fff"/>
+  <circle cx="39" cy="15" r="2.1" fill="#dbeafe"/>
+  <circle cx="39" cy="33" r="2.1" fill="#a5f3fc"/>
+</svg>
