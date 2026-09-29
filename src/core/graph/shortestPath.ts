@@ -140,6 +140,44 @@ export class ShortestPathEngine {
   }
 
   /**
+   * Computes point-to-point route with selectable optimization profile (Quantum Evasive vs Classical Direct)
+   */
+  public findPointToPointPath(
+    sourceId: string,
+    targetId: string,
+    mode: 'quantum_evasive' | 'classical_shortest' = 'quantum_evasive'
+  ): PathResult & { congestionDelayMin: number; emissionKg: number } {
+    const isQuantum = mode === 'quantum_evasive';
+    // Quantum heavily penalizes congestion & closed links; Classical prioritizes raw distance
+    const timeWeight = isQuantum ? 0.75 : 0.25;
+    const distWeight = isQuantum ? 0.25 : 0.75;
+
+    const baseResult = this.findPath(sourceId, targetId, timeWeight, distWeight);
+
+    // Compute congestion delay and emission
+    let congestionDelay = 0;
+    for (let i = 0; i < baseResult.pathNodeIds.length - 1; i++) {
+      const u = baseResult.pathNodeIds[i];
+      const v = baseResult.pathNodeIds[i + 1];
+      const neighbors = this.graph.adjacency.get(u) || [];
+      const edge = neighbors.find(n => n.targetId === v)?.edge;
+      if (edge) {
+        const freeTimeMin = (edge.lengthKm / (edge.baseSpeedKmh || 45)) * 60;
+        const actualTimeMin = (edge.lengthKm / Math.max(5, edge.currentSpeedKmh)) * 60;
+        congestionDelay += Math.max(0, actualTimeMin - freeTimeMin);
+      }
+    }
+
+    const emissionKg = Number(((baseResult.distanceKm * 120) / 1000).toFixed(2));
+
+    return {
+      ...baseResult,
+      congestionDelayMin: Number(congestionDelay.toFixed(1)),
+      emissionKg,
+    };
+  }
+
+  /**
    * Precomputes full Distance & Travel Time Matrices between all nodes
    */
   public computeAllPairsMatrix(): {

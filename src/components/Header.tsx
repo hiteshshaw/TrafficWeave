@@ -11,10 +11,11 @@ import {
   RotateCcw,
   Volume2,
   VolumeX,
+  TrendingDown,
 } from 'lucide-react';
 import { sounds } from '../core/audio/soundEffects';
 
-export type ActiveTab = 'simulation' | 'tournament' | 'benchmark' | 'quantum' | 'innovations' | 'deliverables' | 'theory';
+export type ActiveTab = 'simulation' | 'before_after' | 'tournament' | 'benchmark' | 'quantum' | 'innovations' | 'deliverables' | 'theory';
 export type MapViewMode = 'real_gis' | 'schematic_canvas';
 
 interface HeaderProps {
@@ -31,6 +32,7 @@ interface HeaderProps {
 
 const tabs = [
   { id: 'simulation', label: 'Simulation', icon: Activity },
+  { id: 'before_after', label: 'Before vs After', icon: TrendingDown },
   { id: 'tournament', label: 'Arena', icon: BarChart3 },
   { id: 'innovations', label: 'Routing Lab', icon: Cpu },
   { id: 'benchmark', label: 'Benchmarks', icon: BarChart3 },

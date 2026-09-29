@@ -10,6 +10,7 @@ import { FleetControlPanel } from './components/FleetControlPanel';
 import { DeliverablesModal } from './components/DeliverablesModal';
 import { TheoryGuide } from './components/TheoryGuide';
 import { QuantumInnovationsLab } from './components/QuantumInnovationsLab';
+import { BeforeVsAfterScreen } from './components/BeforeVsAfterScreen';
 
 import { PRESET_MAPS } from './core/graph/graphGenerator';
 import { CityGraph, TrafficIncident } from './types/graph';
@@ -271,6 +272,35 @@ export const App: React.FC = () => {
     setOptimizerHistory(state.history);
   };
 
+  const handleClearAllIncidents = () => {
+    trafficEngineRef.current.clearAllIncidents();
+    setIncidents([]);
+    pathEngineRef.current.invalidateCache();
+    setGraph({ ...graph });
+
+    let opt: any;
+    if (selectedAlgorithm === 'QPSO') {
+      opt = new QPSOOptimizer(graph, vehicles, pathEngineRef.current, evaluatorRef.current);
+    } else if (selectedAlgorithm === 'CLASSICAL_PSO') {
+      opt = new ClassicalPSOOptimizer(graph, vehicles, pathEngineRef.current, evaluatorRef.current);
+    } else if (selectedAlgorithm === 'QGA') {
+      opt = new QGAOptimizer(graph, vehicles, pathEngineRef.current, evaluatorRef.current);
+    } else if (selectedAlgorithm === 'CLASSICAL_GA') {
+      opt = new ClassicalGAOptimizer(graph, vehicles, pathEngineRef.current, evaluatorRef.current);
+    } else if (selectedAlgorithm === 'SIMULATED_ANNEALING') {
+      opt = new SimulatedAnnealingOptimizer(graph, vehicles, pathEngineRef.current, evaluatorRef.current);
+    } else {
+      opt = new ClarkeWrightSavingsOptimizer(graph, vehicles, pathEngineRef.current, evaluatorRef.current);
+    }
+
+    const newSol = opt.runAll();
+    const state = opt.getState();
+    setActiveOptimizer(opt);
+    setCurrentSolution(newSol);
+    setCurrentIteration(state.currentIteration);
+    setOptimizerHistory(state.history);
+  };
+
   // Tournament controls
   const handleToggleTournamentPlay = () => {
     setIsTournamentPlaying(!isTournamentPlaying);
@@ -364,6 +394,8 @@ export const App: React.FC = () => {
                     showComparison={true}
                     incidents={incidents}
                     onAddIncident={handleAddIncident}
+                    onRemoveIncident={handleRemoveIncident}
+                    onClearAllIncidents={handleClearAllIncidents}
                     simulationTimeMin={simulationTimeMin}
                   />
                 ) : (
@@ -413,6 +445,11 @@ export const App: React.FC = () => {
               </aside>
             </div>
           </div>
+        )}
+
+        {/* TAB 1.5: BEFORE VS AFTER COMPARISON SCREEN */}
+        {activeTab === 'before_after' && (
+          <BeforeVsAfterScreen />
         )}
 
         {/* TAB 2: ALGORITHM TOURNAMENT RACE */}

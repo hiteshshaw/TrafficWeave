@@ -1,0 +1,377 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="100%" style="background:#f8fafc; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <!-- Soft Drop Shadow for cards and containers -->
+    <filter id="cardShadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <filter id="pillShadow" x="-3%" y="-6%" width="106%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.12"/>
+    </filter>
+    
+    <!-- Arrowhead markers -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0f172a"/>
+    </marker>
+    <marker id="pipeArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <!-- ======================================================== -->
+  <!-- TOP BANNER HEADER -->
+  <!-- ======================================================== -->
+  <g transform="translate(30, 20)">
+    <!-- Logo Icon -->
+    <rect x="0" y="0" width="44" height="44" rx="10" fill="#0284c7"/>
+    <path d="M 12 22 C 12 16, 16 12, 22 12 C 28 12, 32 16, 32 22 C 32 28, 28 32, 22 32" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="16" cy="16" r="3" fill="#38bdf8"/>
+    <circle cx="28" cy="28" r="3" fill="#38bdf8"/>
+    <circle cx="22" cy="22" r="3.5" fill="#ffffff"/>
+
+    <!-- Main Title -->
+    <text x="56" y="31" font-size="24" font-weight="800" fill="#0f172a" letter-spacing="-0.02em">TrafficWeave: Quantum-Inspired Traffic Route Optimization Platform</text>
+
+    <!-- Legend Pill (Top Right) -->
+    <rect x="1320" y="6" width="220" height="32" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    <line x1="1335" y1="22" x2="1365" y2="22" stroke="#64748b" stroke-width="1.5"/>
+    <text x="1375" y="26" font-size="11" font-weight="600" fill="#475569">Legend</text>
+    <line x1="1430" y1="22" x2="1465" y2="22" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="1475" y="26" font-size="11" font-weight="600" fill="#475569">Legend</text>
+  </g>
+
+  <!-- ======================================================== -->
+  <!-- 4 STAGE COLUMNS -->
+  <!-- ======================================================== -->
+
+  <!-- ==================== STAGE 1: ORANGE ==================== -->
+  <g transform="translate(30, 80)">
+    <!-- Container -->
+    <rect x="0" y="0" width="365" height="790" rx="16" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5" filter="url(#cardShadow)"/>
+    
+    <!-- Stage Pill -->
+    <rect x="12" y="10" width="341" height="48" rx="24" fill="#ea580c" filter="url(#pillShadow)"/>
+    <text x="182" y="30" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="0.03em">STAGE 1: REAL-TIME TRAFFIC</text>
+    <text x="182" y="46" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="0.03em">DATA INGESTION &amp; PROCESSING</text>
+
+    <!-- Box 1.1 -->
+    <g transform="translate(20, 75)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 25)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#fff7ed"/>
+        <path d="M 8 14 L 16 10 L 28 16 L 36 12 L 36 34 L 28 38 L 16 32 L 8 36 Z" fill="none" stroke="#ea580c" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M 16 10 L 16 32 M 28 16 L 28 38" fill="none" stroke="#ea580c" stroke-width="2"/>
+        <circle cx="22" cy="20" r="3" fill="#ea580c"/>
+      </g>
+      <text x="76" y="44" font-size="15" font-weight="750" fill="#0f172a">GIS &amp; OSM Ingestion</text>
+      <text x="76" y="66" font-size="12" font-weight="500" fill="#64748b">(e.g., Mapbox,</text>
+      <text x="76" y="84" font-size="12" font-weight="500" fill="#64748b">MapQuest APIs)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="210" x2="182" y2="235" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 1.2 -->
+    <g transform="translate(20, 240)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 25)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#fff7ed"/>
+        <path d="M 8 28 L 12 20 L 32 20 L 36 28 Z M 6 28 L 38 28 L 38 34 L 6 34 Z" fill="none" stroke="#ea580c" stroke-width="2"/>
+        <circle cx="12" cy="34" r="3" fill="#ea580c"/>
+        <circle cx="32" cy="34" r="3" fill="#ea580c"/>
+        <path d="M 16 12 C 18 10, 26 10, 28 12 M 12 8 C 16 4, 28 4, 32 8" fill="none" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round"/>
+      </g>
+      <text x="76" y="40" font-size="15" font-weight="750" fill="#0f172a">Telematics</text>
+      <text x="76" y="58" font-size="15" font-weight="750" fill="#0f172a">Integration</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(e.g., GPS, IoT Sensor</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">Data streams)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="375" x2="182" y2="400" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 1.3 -->
+    <g transform="translate(20, 405)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 28)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#fff7ed"/>
+        <path d="M 6 22 L 14 22 L 18 10 L 24 34 L 28 16 L 32 26 L 38 22" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <text x="76" y="44" font-size="15" font-weight="750" fill="#0f172a">Kalman Filter</text>
+      <text x="76" y="66" font-size="12" font-weight="500" fill="#64748b">(e.g., Noise reduction,</text>
+      <text x="76" y="84" font-size="12" font-weight="500" fill="#64748b">state estimation)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="540" x2="182" y2="565" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 1.4 -->
+    <g transform="translate(20, 570)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 25)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#fff7ed"/>
+        <ellipse cx="22" cy="12" rx="14" ry="5" fill="none" stroke="#ea580c" stroke-width="2"/>
+        <path d="M 8 12 L 8 32 C 8 36, 36 36, 36 32 L 36 12" fill="none" stroke="#ea580c" stroke-width="2"/>
+        <path d="M 8 22 C 8 26, 36 26, 36 22" fill="none" stroke="#ea580c" stroke-width="2"/>
+      </g>
+      <text x="76" y="44" font-size="15" font-weight="750" fill="#0f172a">Data Preprocessing</text>
+      <text x="76" y="66" font-size="12" font-weight="500" fill="#64748b">(e.g., Clean, normalize,</text>
+      <text x="76" y="84" font-size="12" font-weight="500" fill="#64748b">aggregate)</text>
+    </g>
+  </g>
+
+  <!-- ==================== STAGE 2: GREEN ==================== -->
+  <g transform="translate(425, 80)">
+    <!-- Container -->
+    <rect x="0" y="0" width="365" height="790" rx="16" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" filter="url(#cardShadow)"/>
+    
+    <!-- Stage Pill -->
+    <rect x="12" y="10" width="341" height="48" rx="24" fill="#16a34a" filter="url(#pillShadow)"/>
+    <text x="182" y="30" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="0.03em">STAGE 2: TRAFFIC MODELING</text>
+    <text x="182" y="46" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="0.03em">&amp; OBJECTIVE EVALUATION</text>
+
+    <!-- Box 2.1 -->
+    <g transform="translate(20, 75)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#f0fdf4"/>
+        <path d="M 8 36 L 36 36 M 8 10 L 8 36" stroke="#16a34a" stroke-width="2"/>
+        <path d="M 12 16 Q 24 18 34 30" fill="none" stroke="#16a34a" stroke-width="2.2"/>
+        <path d="M 30 30 L 34 30 L 34 26" fill="none" stroke="#16a34a" stroke-width="2"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">BPR Traffic Flow</text>
+      <text x="76" y="56" font-size="15" font-weight="750" fill="#0f172a">Model</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(Bureau of Public Roads</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">link flow)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="210" x2="182" y2="235" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 2.2 -->
+    <g transform="translate(20, 240)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#f0fdf4"/>
+        <path d="M 22 8 L 38 36 L 6 36 Z" fill="none" stroke="#16a34a" stroke-width="2" stroke-linejoin="round"/>
+        <line x1="22" y1="18" x2="22" y2="26" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="22" cy="31" r="1.5" fill="#16a34a"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">Incident Detection</text>
+      <text x="76" y="56" font-size="15" font-weight="750" fill="#0f172a">Engine</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(Anomaly detection,</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">traffic events)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="375" x2="182" y2="400" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 2.3 -->
+    <g transform="translate(20, 405)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#f0fdf4"/>
+        <path d="M 8 22 L 28 22 M 22 14 L 34 22 L 22 30" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="8" y1="12" x2="8" y2="32" stroke="#16a34a" stroke-width="2"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">Green Corridor</text>
+      <text x="76" y="56" font-size="15" font-weight="750" fill="#0f172a">Optimization</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(Emergency, high-priority</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">routes)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="540" x2="182" y2="565" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 2.4 -->
+    <g transform="translate(20, 570)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#f0fdf4"/>
+        <circle cx="22" cy="18" r="8" fill="none" stroke="#16a34a" stroke-width="2"/>
+        <text x="22" y="22" font-size="10" font-weight="800" text-anchor="middle" fill="#16a34a">$</text>
+        <path d="M 10 32 C 14 28, 22 28, 34 32" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">Multi-Objective</text>
+      <text x="76" y="56" font-size="15" font-weight="750" fill="#0f172a">Cost Evaluator</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(e.g., Time, distance,</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">emissions, toll cost)</text>
+    </g>
+  </g>
+
+  <!-- ==================== STAGE 3: PURPLE ==================== -->
+  <g transform="translate(820, 80)">
+    <!-- Container -->
+    <rect x="0" y="0" width="365" height="790" rx="16" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#cardShadow)"/>
+    
+    <!-- Stage Pill -->
+    <rect x="12" y="10" width="341" height="48" rx="24" fill="#9333ea" filter="url(#pillShadow)"/>
+    <text x="182" y="30" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="0.03em">STAGE 3: QUANTUM-INSPIRED</text>
+    <text x="182" y="46" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="0.03em">ROUTE OPTIMIZATION CORE</text>
+
+    <!-- Box 3.1 -->
+    <g transform="translate(20, 75)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#faf5ff"/>
+        <ellipse cx="22" cy="22" rx="16" ry="6" fill="none" stroke="#9333ea" stroke-width="1.8" transform="rotate(30 22 22)"/>
+        <ellipse cx="22" cy="22" rx="16" ry="6" fill="none" stroke="#9333ea" stroke-width="1.8" transform="rotate(-30 22 22)"/>
+        <ellipse cx="22" cy="22" rx="16" ry="6" fill="none" stroke="#9333ea" stroke-width="1.8" transform="rotate(90 22 22)"/>
+        <circle cx="22" cy="22" r="3.5" fill="#9333ea"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">QPSO Quantum</text>
+      <text x="76" y="56" font-size="15" font-weight="750" fill="#0f172a">Swarm Core</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(Quantum Particle</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">Swarm Optimization)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="210" x2="182" y2="235" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 3.2 -->
+    <g transform="translate(20, 240)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#faf5ff"/>
+        <line x1="6" y1="22" x2="38" y2="22" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="2"/>
+        <line x1="22" y1="6" x2="22" y2="38" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="2"/>
+        <path d="M 8 10 Q 18 20 22 36 Q 26 20 36 10" fill="none" stroke="#9333ea" stroke-width="2.2"/>
+        <circle cx="22" cy="36" r="2.5" fill="#9333ea"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">Delta-Well Wave</text>
+      <text x="76" y="56" font-size="15" font-weight="750" fill="#0f172a">Function</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(Probability amplitude for</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">swarm search)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="375" x2="182" y2="400" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 3.3 -->
+    <g transform="translate(20, 405)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#faf5ff"/>
+        <circle cx="22" cy="22" r="12" fill="none" stroke="#9333ea" stroke-width="2"/>
+        <path d="M 22 10 A 12 12 0 0 1 34 22" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="22" cy="22" r="4" fill="#9333ea"/>
+      </g>
+      <text x="76" y="44" font-size="15" font-weight="750" fill="#0f172a">QGA Qubit Rotation</text>
+      <text x="76" y="68" font-size="12" font-weight="500" fill="#64748b">(Quantum Genetic</text>
+      <text x="76" y="86" font-size="12" font-weight="500" fill="#64748b">Algorithm, rotation gates)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="182" y1="540" x2="182" y2="565" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 3.4 -->
+    <g transform="translate(20, 570)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#faf5ff"/>
+        <path d="M 6 28 Q 16 6 22 22 Q 28 38 38 14" fill="none" stroke="#9333ea" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="22" cy="22" r="3" fill="#9333ea"/>
+      </g>
+      <text x="76" y="44" font-size="15" font-weight="750" fill="#0f172a">Quantum Tunneling</text>
+      <text x="76" y="68" font-size="12" font-weight="500" fill="#64748b">(Escape local minima via</text>
+      <text x="76" y="86" font-size="12" font-weight="500" fill="#64748b">tunneling)</text>
+    </g>
+  </g>
+
+  <!-- ==================== STAGE 4: BLUE ==================== -->
+  <g transform="translate(1215, 80)">
+    <!-- Container -->
+    <rect x="0" y="0" width="355" height="790" rx="16" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#cardShadow)"/>
+    
+    <!-- Stage Pill -->
+    <rect x="12" y="10" width="331" height="48" rx="24" fill="#2563eb" filter="url(#pillShadow)"/>
+    <text x="177" y="30" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="0.03em">STAGE 4: DEPLOYMENT,</text>
+    <text x="177" y="46" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="0.03em">BENCHMARKING &amp; SECURITY</text>
+
+    <!-- Box 4.1 -->
+    <g transform="translate(15, 75)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#eff6ff"/>
+        <rect x="10" y="24" width="4" height="12" fill="#2563eb"/>
+        <rect x="18" y="16" width="4" height="20" fill="#2563eb"/>
+        <rect x="26" y="20" width="4" height="16" fill="#2563eb"/>
+        <rect x="34" y="10" width="4" height="26" fill="#2563eb"/>
+      </g>
+      <text x="76" y="44" font-size="15" font-weight="750" fill="#0f172a">Benchmark Arena</text>
+      <text x="76" y="68" font-size="12" font-weight="500" fill="#64748b">(Performance testing,</text>
+      <text x="76" y="86" font-size="12" font-weight="500" fill="#64748b">comparison)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="177" y1="210" x2="177" y2="235" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 4.2 -->
+    <g transform="translate(15, 240)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#eff6ff"/>
+        <rect x="10" y="10" width="24" height="24" rx="4" fill="none" stroke="#2563eb" stroke-width="2"/>
+        <line x1="6" y1="16" x2="10" y2="16" stroke="#2563eb" stroke-width="2"/>
+        <line x1="6" y1="28" x2="10" y2="28" stroke="#2563eb" stroke-width="2"/>
+        <line x1="34" y1="16" x2="38" y2="16" stroke="#2563eb" stroke-width="2"/>
+        <line x1="34" y1="28" x2="38" y2="28" stroke="#2563eb" stroke-width="2"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">D-Wave QUBO Matrix</text>
+      <text x="76" y="60" font-size="12" font-weight="500" fill="#64748b">(Formulation for Quadratic</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">Unconstrained Binary</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">Optimization)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="177" y1="375" x2="177" y2="400" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 4.3 -->
+    <g transform="translate(15, 405)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#eff6ff"/>
+        <rect x="8" y="10" width="28" height="20" rx="3" fill="none" stroke="#2563eb" stroke-width="2"/>
+        <text x="22" y="24" font-size="8" font-weight="800" text-anchor="middle" fill="#2563eb">NIST</text>
+        <path d="M 14 30 L 12 38 L 18 35 L 24 38 L 22 30" fill="#2563eb"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">NIST ML-DSA PQC</text>
+      <text x="76" y="56" font-size="15" font-weight="750" fill="#0f172a">Signature</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(Post-Quantum Cryptog-</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">raphy digital signature)</text>
+    </g>
+
+    <!-- Arrow Down -->
+    <line x1="177" y1="540" x2="177" y2="565" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Box 4.4 -->
+    <g transform="translate(15, 570)">
+      <rect x="0" y="0" width="325" height="135" rx="12" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="44" height="44" rx="8" fill="#eff6ff"/>
+        <path d="M 12 12 L 20 8 L 28 14 L 36 10 L 36 32 L 28 36 L 20 30 L 12 34 Z" fill="none" stroke="#2563eb" stroke-width="2"/>
+        <circle cx="24" cy="18" r="3" fill="#2563eb"/>
+      </g>
+      <text x="76" y="38" font-size="15" font-weight="750" fill="#0f172a">Leaflet GIS Real-</text>
+      <text x="76" y="56" font-size="15" font-weight="750" fill="#0f172a">time Dispatch</text>
+      <text x="76" y="78" font-size="12" font-weight="500" fill="#64748b">(Map visualization, route</text>
+      <text x="76" y="96" font-size="12" font-weight="500" fill="#64748b">delivery)</text>
+    </g>
+  </g>
+
+  <!-- ======================================================== -->
+  <!-- INTER-STAGE CONNECTING PIPELINES (Black Stepped Arrows) -->
+  <!-- ======================================================== -->
+
+  <!-- Pipe 1: Stage 1 Box 4 -> Stage 2 Box 1 (and Box 3) -->
+  <path d="M 375 715 L 400 715 L 400 220 L 445 220" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#pipeArrow)"/>
+  <path d="M 400 550 L 445 550" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#pipeArrow)"/>
+
+  <!-- Pipe 2: Stage 2 Box 4 -> Stage 3 Box 1 (and Box 3) -->
+  <path d="M 770 715 L 795 715 L 795 220 L 840 220" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#pipeArrow)"/>
+  <path d="M 795 550 L 840 550" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#pipeArrow)"/>
+
+  <!-- Pipe 3: Stage 3 Box 4 -> Stage 4 Box 1 (and Box 2) -->
+  <path d="M 1165 715 L 1190 715 L 1190 220 L 1230 220" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#pipeArrow)"/>
+  <path d="M 1190 385 L 1230 385" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#pipeArrow)"/>
+
+</svg>
