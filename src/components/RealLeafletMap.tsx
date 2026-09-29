@@ -288,7 +288,7 @@ export const RealLeafletMap: React.FC<RealLeafletMapProps> = ({
   const [tripProgress, setTripProgress] = useState<number>(0);
   const [simSpeed, setSimSpeed] = useState<number>(1);
   const [vehicleCycle, setVehicleCycle] = useState<number>(0);
-  const [isGreenChannelActive, setIsGreenChannelActive] = useState<boolean>(true);
+  const [isGreenChannelActive, setIsGreenChannelActive] = useState<boolean>(false);
   const [selectedEdgeToBlock, setSelectedEdgeToBlock] = useState<string>('');
 
   // Path Engine instance for custom P2P calculations
@@ -298,11 +298,13 @@ export const RealLeafletMap: React.FC<RealLeafletMapProps> = ({
   useEffect(() => {
     if (graph.nodes.length > 0) {
       const depots = graph.nodes.filter(n => n.type === 'depot');
-      const customers = graph.nodes.filter(n => n.type === 'customer' || n.type === 'hospital');
+      const customers = graph.nodes.filter(n => n.type === 'customer');
+      const allNonDepot = graph.nodes.filter(n => n.type !== 'depot');
       setStartNodeId(depots[0]?.id || graph.nodes[0].id);
-      setEndNodeId(customers[customers.length - 1]?.id || graph.nodes[graph.nodes.length - 1].id);
+      setEndNodeId(customers[0]?.id || allNonDepot[allNonDepot.length - 1]?.id || graph.nodes[graph.nodes.length - 1].id);
       setTripProgress(0);
       setIsDrivingSim(false);
+      setIsGreenChannelActive(false);
     }
   }, [graph]);
 
@@ -412,6 +414,34 @@ export const RealLeafletMap: React.FC<RealLeafletMapProps> = ({
     }
   };
 
+  const handleToggleGreenCorridor = () => {
+    const nextState = !isGreenChannelActive;
+    setIsGreenChannelActive(nextState);
+    sounds.playQuantumPulse(nextState ? 650 : 400);
+
+    if (nextState) {
+      // Find hospital node in the current city
+      const hospital = graph.nodes.find(n => n.type === 'hospital');
+      if (hospital) {
+        // If neither start nor end is hospital, route to hospital
+        if (startNodeId !== hospital.id && endNodeId !== hospital.id) {
+          setEndNodeId(hospital.id);
+          setTripProgress(0);
+        }
+      }
+    } else {
+      // If turning OFF and end point was hospital, restore standard customer node
+      const currentEnd = nodeMap.get(endNodeId);
+      if (currentEnd?.type === 'hospital') {
+        const regularCustomer = graph.nodes.find(n => n.type === 'customer' && n.id !== startNodeId);
+        if (regularCustomer) {
+          setEndNodeId(regularCustomer.id);
+          setTripProgress(0);
+        }
+      }
+    }
+  };
+
   return (
     <div className="map-view map-view-real" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       
@@ -464,10 +494,7 @@ export const RealLeafletMap: React.FC<RealLeafletMapProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             {hospitalCount > 0 && (
               <button
-                onClick={() => {
-                  setIsGreenChannelActive(!isGreenChannelActive);
-                  sounds.playQuantumPulse(600);
-                }}
+                onClick={handleToggleGreenCorridor}
                 style={{
                   padding: '4px 8px',
                   fontSize: '0.72rem',
@@ -641,17 +668,41 @@ export const RealLeafletMap: React.FC<RealLeafletMapProps> = ({
                 paddingTop: 4,
                 borderTop: '1px solid var(--border-subtle)',
               }}>
+                {isGreenChannelActive && (
+                  <div style={{
+                    gridColumn: '1 / -1',
+                    background: '#dcfce7',
+                    border: '1px solid #86efac',
+                    color: '#15803d',
+                    padding: '6px 12px',
+                    borderRadius: 6,
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 8,
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Ambulance size={16} color="#15803d" />
+                      <span>🚨 EMERGENCY GREEN CORRIDOR ACTIVE — Priority Transit to Hospital (Traffic Pre-Empted)</span>
+                    </div>
+                    <span style={{ fontSize: '0.7rem', background: '#15803d', color: '#fff', padding: '2px 8px', borderRadius: 10 }}>
+                      Zero Delay Granted
+                    </span>
+                  </div>
+                )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.78rem' }}>
                   <Compass size={14} color="#2563eb" />
                   <div>Distance: <strong style={{ color: '#0f172a' }}>{p2pRoute.distanceKm} km</strong></div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.78rem' }}>
                   <Clock size={14} color="#16a34a" />
-                  <div>Est. Time: <strong style={{ color: '#0f172a' }}>{p2pRoute.travelTimeMin} min</strong></div>
+                  <div>Est. Time: <strong style={{ color: '#0f172a' }}>{isGreenChannelActive ? Math.round(p2pRoute.travelTimeMin * 0.75) : p2pRoute.travelTimeMin} min</strong></div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.78rem' }}>
                   <Flame size={14} color="#d97706" />
-                  <div>Delay Factor: <strong style={{ color: '#b45309' }}>+{p2pRoute.congestionDelayMin} min</strong></div>
+                  <div>Delay Factor: <strong style={{ color: isGreenChannelActive ? '#15803d' : '#b45309' }}>{isGreenChannelActive ? '0.0 min (Bypassed)' : `+${p2pRoute.congestionDelayMin} min`}</strong></div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.78rem' }}>
                   <Zap size={14} color="#059669" />
@@ -1048,9 +1099,13 @@ export const RealLeafletMap: React.FC<RealLeafletMapProps> = ({
                 <Polyline
                   positions={p2pGeoPoints}
                   pathOptions={{
-                    color: p2pAlgorithm === 'quantum_evasive' ? '#2563eb' : '#ea580c',
-                    weight: 5.5,
-                    opacity: 0.9,
+                    color: isGreenChannelActive
+                      ? '#16a34a'
+                      : p2pAlgorithm === 'quantum_evasive'
+                      ? '#2563eb'
+                      : '#ea580c',
+                    weight: isGreenChannelActive ? 6.5 : 5.5,
+                    opacity: 0.95,
                   }}
                 />
               )}
@@ -1059,11 +1114,18 @@ export const RealLeafletMap: React.FC<RealLeafletMapProps> = ({
               {currentTripVehiclePos && (
                 <Marker
                   position={currentTripVehiclePos}
-                  icon={createVehiclePinIcon(p2pAlgorithm === 'quantum_evasive' ? '#2563eb' : '#ea580c', '🚗')}
+                  icon={createVehiclePinIcon(
+                    isGreenChannelActive
+                      ? '#16a34a'
+                      : p2pAlgorithm === 'quantum_evasive'
+                      ? '#2563eb'
+                      : '#ea580c',
+                    isGreenChannelActive ? '🚑' : '🚗'
+                  )}
                 >
                   <Popup>
                     <div style={{ fontSize: '12px' }}>
-                      <strong>Active Trip Vehicle</strong><br />
+                      <strong>{isGreenChannelActive ? '🚑 Emergency Green Corridor Ambulance' : 'Active Trip Vehicle'}</strong><br />
                       Trip Progress: {Math.round(tripProgress * 100)}%
                     </div>
                   </Popup>
