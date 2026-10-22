@@ -1,175 +1,178 @@
 # TrafficWeave
 
-> Quantum-Inspired Metaheuristic Engine for Dynamic Vehicle Routing and Multi-Depot Traffic Optimization.
-> **Problem Statement ID:** 26137 | **Theme:** Transportation & Logistics | **Category:** Software
+**Smart delivery fleet routing for congested Indian cities.**  
+Plans fast, traffic-aware delivery routes across multiple depots using quantum-inspired swarm optimization (QPSO) to bypass rush-hour bottlenecks.
 
-TrafficWeave is a high-performance optimization platform designed for the Multi-Depot Capacitated Vehicle Routing Problem with Time Windows (MD-CVRPTW) under dynamic, non-stationary urban traffic conditions. The platform implements Quantum Particle Swarm Optimization (QPSO), Quantum Genetic Algorithms (QGA), and classical metaheuristic benchmarks with real OpenStreetMap network integration across Indian metropolitan areas.
-
----
-
-## 1. System Architecture (4-Stage Pipeline)
-
-```mermaid
-flowchart LR
-    %% STAGE 1
-    subgraph STAGE1 ["STAGE 1: REAL-TIME TRAFFIC DATA INGESTION & PROCESSING"]
-        direction TB
-        S1_1["<b>GIS & OSM Ingestion</b><br/>(e.g., OpenStreetMap, Mapbox APIs)"]
-        S1_2["<b>Telematics Integration</b><br/>(e.g., GPS, IoT Sensor Data Streams)"]
-        S1_3["<b>Kalman Filter</b><br/>(e.g., Noise Reduction, State Estimation)"]
-        S1_4["<b>Data Preprocessing</b><br/>(e.g., Clean, Normalize, Aggregate Multi-Graph)"]
-        S1_1 --> S1_2 --> S1_3 --> S1_4
-    end
-
-    %% STAGE 2
-    subgraph STAGE2 ["STAGE 2: TRAFFIC MODELING & OBJECTIVE EVALUATION"]
-        direction TB
-        S2_1["<b>BPR Traffic Flow Model</b><br/>(Bureau of Public Roads Link Flow)"]
-        S2_2["<b>Incident Detection Engine</b><br/>(Anomaly Detection, Traffic Events)"]
-        S2_3["<b>Green Corridor Optimization</b><br/>(Emergency, High-Priority Routes)"]
-        S2_4["<b>Multi-Objective Cost Evaluator</b><br/>(e.g., Time, Distance, Emissions, Toll Cost)"]
-        S2_1 --> S2_2 --> S2_3 --> S2_4
-    end
-
-    %% STAGE 3
-    subgraph STAGE3 ["STAGE 3: QUANTUM-INSPIRED ROUTE OPTIMIZATION CORE"]
-        direction TB
-        S3_1["<b>QPSO Quantum Swarm Core</b><br/>(Quantum Particle Swarm Optimization)"]
-        S3_2["<b>Delta-Well Wave Function</b><br/>(Probability Amplitude for Swarm Search)"]
-        S3_3["<b>QGA Qubit Rotation</b><br/>(Quantum Genetic Algorithm, Rotation Gates)"]
-        S3_4["<b>Quantum Tunneling</b><br/>(Escape Local Minima via Tunneling)"]
-        S3_1 --> S3_2 --> S3_3 --> S3_4
-    end
-
-    %% STAGE 4
-    subgraph STAGE4 ["STAGE 4: DEPLOYMENT, BENCHMARKING & SECURITY"]
-        direction TB
-        S4_1["<b>Benchmark Arena</b><br/>(Performance Testing, Comparison)"]
-        S4_2["<b>D-Wave QUBO Matrix</b><br/>(Formulation for Quantum Annealing)"]
-        S4_3["<b>NIST ML-DSA PQC Signature</b><br/>(Post-Quantum Cryptography Digital Seal)"]
-        S4_4["<b>Leaflet GIS Real-time Dispatch</b><br/>(Map Visualization, Route Delivery)"]
-        S4_1 --> S4_2 --> S4_3 --> S4_4
-    end
-
-    %% Bridges
-    S1_4 ==> S2_1
-    S2_4 ==> S3_1
-    S3_4 ==> S4_1
-
-    %% Styling
-    style STAGE1 fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#9a3412
-    style STAGE2 fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534
-    style STAGE3 fill:#faf5ff,stroke:#9333ea,stroke-width:2px,color:#6b21a8
-    style STAGE4 fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e40af
-```
+> **Smart India Hackathon** | Problem Statement 26137 (Transportation & Logistics)
 
 ---
 
-## 2. Problem Formulation & Mathematical Model
+## What is TrafficWeave?
 
-The system models the transportation network as a time-dependent directed multi-graph $G = (V, E, W(t))$, where $V = V_{\text{depot}} \cup V_{\text{customer}} \cup V_{\text{hospital}}$ and $E$ is the set of traversable road links.
+Most navigation tools calculate the shortest path based on distance. In crowded Indian cities, the shortest road is often the one stuck in dead stop-and-go traffic. When managing a fleet of delivery vans across multiple warehouses, figuring out which vehicle should visit which stops while respecting truck weight capacities, customer delivery time windows, and live traffic jams is a classic NP-hard challenge (the Multi-Depot Capacitated Vehicle Routing Problem with Time Windows, or MD-CVRPTW).
 
-### Multi-Objective Objective Function
-$$\min \mathcal{F}(S) = w_t \cdot \frac{T(S)}{T_0} + w_d \cdot \frac{D(S)}{D_0} + w_c \cdot \frac{C(S)}{C_0} + w_e \cdot \frac{E(S)}{E_0} + \lambda_1 \sum_{k} \max(0, L_k - Q_k) + \lambda_2 \sum_{i} \max(0, t_i - l_i)$$
+Standard optimization algorithms (like regular Genetic Algorithms or Particle Swarm Optimization) often get trapped in "local optima" — they find an acceptable route early on, and because any small change looks temporarily worse due to nearby traffic jams, they stall and fail to find better options.
 
-Subject to:
-1. **Vehicle Capacity Limits**: $\sum_{i \in R_k} q_i \le Q_k, \quad \forall k \in K$
-2. **Customer Time Windows**: $t_i \in [e_i, l_i]$, with quadratic penalty for late arrival: $P_i = \lambda \cdot \max(0, t_i - l_i)^2$
-3. **Dynamic BPR Travel Times**: $t_e(v) = t_e^0 \left[1 + 0.15 \left(\frac{v_e(t)}{C_e}\right)^4\right] \cdot (1 + \mu_{\text{incident}})$
-4. **Speed-Dependent CO₂ Emission**: $E(S) = \sum_{k} \sum_{(i,j)} d_{ij} \cdot \epsilon_k^{\text{base}} \left[1 + 0.02 \left(\frac{v_{\text{free}} - v_{ij}}{v_{\text{free}}}\right)^2\right]$
+TrafficWeave solves this using **Quantum-Behaved Particle Swarm Optimization (QPSO)** and **Quantum Genetic Algorithms (QGA)**. Everything runs directly in the browser with TypeScript, simulating real road networks from OpenStreetMap for Mumbai, Delhi NCR, Bengaluru, Hyderabad, and Chennai.
 
 ---
 
-## 3. Quantum-Inspired Metaheuristic Mechanics
+## Why QPSO? (The Plain-English Explanation)
 
-### Quantum-Behaved Particle Swarm Optimization (QPSO)
-In QPSO, particle states are described by a wave function $\psi(x, t)$ within a one-dimensional Delta potential well centered at the local stochastic attractor $p_{ij}$:
+In classical Particle Swarm Optimization (PSO), each candidate solution behaves like a physical particle moving with a velocity vector. When traffic creates steep cost barriers, these particles lose momentum and get stuck.
 
-$$\psi(x) = \frac{1}{\sqrt{L}} \exp\left(-\frac{|x - p_{ij}|}{L}\right)$$
+QPSO changes how particles move:
 
-where $L_{ij}(t) = 2 \alpha(t) |mbest_j - x_{ij}(t)|$ and $mbest$ represents the swarm mean best center of gravity:
-
-$$mbest_j = \frac{1}{M} \sum_{i=1}^{M} pbest_{ij}$$
-
-Stochastic local attractor:
-$$p_{ij} = \phi \cdot pbest_{ij} + (1 - \phi) \cdot gbest_j, \quad \phi \sim \mathcal{U}(0, 1)$$
-
-Monte Carlo inverse cumulative sampling yields the position update:
-$$x_{ij}(t+1) = p_{ij}(t) \pm \alpha(t) \cdot |mbest_j - x_{ij}(t)| \cdot \ln\left(\frac{1}{u}\right), \quad u \sim \mathcal{U}(0, 1)$$
-
-### Adaptive Contraction-Expansion Schedule
-$$\alpha(t) = \alpha_{\min} + (\alpha_{\max} - \alpha_{\min}) \cdot \frac{1 + \cos(\pi t / T_{\max})}{2}$$
-
-### Quantum-Inspired Genetic Algorithm (QGA)
-Qubit representation on the Bloch sphere updated via quantum rotation gates:
-$$\begin{bmatrix} \alpha_i' \\ \beta_i' \end{bmatrix} = \begin{bmatrix} \cos(\Delta \theta) & -\sin(\Delta \theta) \\ \sin(\Delta \theta) & \cos(\Delta \theta) \end{bmatrix} \begin{bmatrix} \alpha_i \\ \beta_i \end{bmatrix}$$
+- **No velocity vectors**: Particles don't have physical momentum. Instead, a particle's next position is sampled from a quantum probability wave function (a delta-potential well) centered between its own best history and the swarm's overall best route.
+- **Quantum tunneling out of traffic traps**: Because the probability wave has tails extending across the entire search space, particles can "tunnel" through high-cost barriers. A van route can jump across a congested zone to test completely different route structures that a classical solver would dismiss.
+- **Adaptive contraction schedule**: The search starts wide across the whole city network. As iterations progress, a cosine contraction schedule gradually tightens the radius to polish stop sequences and delivery timings.
+- **Qubit rotation gates (QGA)**: For the genetic solver, delivery stop permutations are encoded as qubit probability states on a Bloch sphere. Rotation gates guide the probability of selecting stops smoothly, avoiding the disruptive random swaps typical of standard GA mutation.
 
 ---
 
-## 4. Empirical Benchmark Data ($N = 30$ Nodes, 4 Vehicles, 100 Iterations)
+## How Routes Are Scored
 
-| Algorithm | Multi-Obj Cost ($\mathcal{F}$) | Distance ($D$) | Travel Time ($T$) | $\text{CO}_2$ Emission | Execution Time | Convergence Iteration | Local Minima Escape Rate |
+Every candidate solution is evaluated against five realistic operational costs:
+
+1. **Travel Time ($T$)**: Modeled with the Bureau of Public Roads (BPR) function. As vehicle volume nears link capacity, travel time spikes exponentially. Active accidents and bottlenecks add further delays.
+2. **Total Distance ($D$)**: Total road kilometers traveled across all vehicle routes.
+3. **Congestion Factor ($C$)**: Measures how much time vehicles spend crawling on bottleneck segments.
+4. **CO₂ Emissions ($E$)**: Uses a physics-based speed curve (COPERT model). Vehicles crawling in heavy traffic emit significantly more grams of CO₂ per km than vehicles moving at a steady 45–50 km/h.
+5. **Penalties**: Heavy score penalties if a vehicle is overloaded beyond its maximum payload (kg) or if a driver arrives after a customer's requested time window.
+
+$$\text{Total Cost} = w_t \cdot \frac{T}{T_0} + w_d \cdot \frac{D}{D_0} + w_c \cdot \frac{C}{C_0} + w_e \cdot \frac{E}{E_0} + \text{Penalties}$$
+
+---
+
+## App Walkthrough
+
+The interface is divided into practical modules:
+
+- **Map Simulation**: An interactive OpenStreetMap view (via Leaflet) displaying depots, customer drop-offs, and priority hospitals. Road lines change color based on dynamic congestion. You can click to inject accidents or traffic jams and watch the fleet recalculate routes in real time.
+- **Before vs. After**: A side-by-side view comparing traditional shortest-distance routing against TrafficWeave's traffic-aware routing. Shows exact time saved, fuel saved, and emission drops.
+- **Tournament Arena**: Runs 6 algorithms side-by-side on the exact same city map in real time (QPSO, QGA, Classical PSO, Genetic Algorithm, Simulated Annealing, and Clarke-Wright).
+- **Benchmark Lab**: Runs Monte Carlo batches (10 to 30 runs per algorithm) to record mean score, standard deviation, and runtime. Automatically runs Welch's $t$-tests to verify whether QPSO's gains are statistically significant ($p < 0.05$). Includes an exact Branch-and-Bound solver for small maps ($N \le 10$) to measure how close QPSO gets to the theoretical global optimum.
+- **Routing Systems Lab**:
+  - *Emergency Green Wave*: Clears a priority signal corridor for ambulances heading to major hospitals.
+  - *Monsoon Waterlogging*: Simulates heavy rainfall, marks low-lying roads as flooded, and reroutes traffic over elevated corridors.
+  - *QUBO Quantum Bridge*: Generates working Python scripts for D-Wave Ocean SDK and IBM Qiskit if you want to run the formulation on quantum hardware.
+  - *Post-Quantum Cryptography*: Signs routes using NIST FIPS 204 ML-DSA digital signatures to prevent dispatch tampering.
+- **Quantum Visualizer**: A 3D Bloch sphere and wave function canvas showing how probability amplitudes evolve as the swarm explores routes.
+
+---
+
+## Benchmark Results
+
+Tested on a benchmark instance ($N = 30$ customer stops, 4 vehicles, 2 depots, 100 iterations):
+
+| Algorithm | Total Cost | Total Distance | Travel Time | CO₂ Emissions | Runtime | Converged At | Local Minima Escape |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **TrafficWeave QPSO (Ours)** | **$364.2$** | **$182.4\text{ km}$** | **$148\text{ min}$** | **$24.6\text{ kg}$** | **$38\text{ ms}$** | **Iter $28$** | **$94.0\%$** |
-| **Quantum Genetic (QGA)** | $388.5$ | $194.2\text{ km}$ | $156\text{ min}$ | $26.2\text{ kg}$ | $44\text{ ms}$ | Iter $36$ | $88.5\%$ |
-| **Standard Classical PSO** | $412.6$ | $206.3\text{ km}$ | $169\text{ min}$ | $27.9\text{ kg}$ | $142\text{ ms}$ | Iter $64$ | $34.0\%$ |
-| **Classical GA (OX + 2-Opt)** | $428.1$ | $214.0\text{ km}$ | $178\text{ min}$ | $28.9\text{ kg}$ | $185\text{ ms}$ | Iter $78$ | $22.0\%$ |
-| **Simulated Annealing** | $446.7$ | $223.5\text{ km}$ | $184\text{ min}$ | $30.2\text{ kg}$ | $96\text{ ms}$ | Iter $82$ | $58.0\%$ |
-| **Clarke-Wright Savings** | $542.8$ | $271.4\text{ km}$ | $215\text{ min}$ | $36.6\text{ kg}$ | $4\text{ ms}$ | Static Baseline | $0.0\%$ |
-| **Exact Branch & Bound ($N \le 10$)**| $361.0$ (Opt) | $180.2\text{ km}$ | $145\text{ min}$ | $24.3\text{ kg}$ | $1,840\text{ ms}$ | Full Search | $100\%$ |
+| **TrafficWeave QPSO** | **364.2** | **182.4 km** | **148 min** | **24.6 kg** | **38 ms** | **Iter 28** | **94.0%** |
+| Quantum Genetic (QGA) | 388.5 | 194.2 km | 156 min | 26.2 kg | 44 ms | Iter 36 | 88.5% |
+| Classical PSO | 412.6 | 206.3 km | 169 min | 27.9 kg | 142 ms | Iter 64 | 34.0% |
+| Classical GA (OX + 2-Opt) | 428.1 | 214.0 km | 178 min | 28.9 kg | 185 ms | Iter 78 | 22.0% |
+| Simulated Annealing | 446.7 | 223.5 km | 184 min | 30.2 kg | 96 ms | Iter 82 | 58.0% |
+| Clarke-Wright Savings | 542.8 | 271.4 km | 215 min | 36.6 kg | 4 ms | Static | 0.0% |
+| Exact Branch & Bound ($N \le 10$) | 361.0 *(Opt)* | 180.2 km | 145 min | 24.3 kg | 1,840 ms | Exhaustive | 100.0% |
+
+### Key Takeaways:
+- QPSO produced **11.7% lower route cost** than standard Classical PSO on the same traffic map.
+- QPSO converged in **28 iterations** (versus 64 iterations for classical PSO), running in under 40 milliseconds directly in the browser.
+- The quantum delta-well position sampling achieved a **94% escape rate** from local traffic traps, compared to only 34% for classical PSO.
 
 ---
 
-## 5. Supported Indian Metropolitan Networks
+## Supported Indian Cities
 
-| Network Name | Nodes ($|V|$) | Road Links ($|E|$) | Depots ($M$) | Demand Nodes | Priority Hospitals | Coordinates |
+TrafficWeave includes presets modeled after real street networks, warehouses, and hospital hubs:
+
+| City Network | Nodes | Road Links | Depots | Customer Stops | Key Hospitals | Coordinates |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Mumbai Metropolitan Region** | $25$ | $38$ | $2$ (BKC, Thane) | $20$ | $3$ (KEM, Lilavati, Fortis) | $19.0760^\circ\text{ N}, 72.8777^\circ\text{ E}$ |
-| **Delhi National Capital Region** | $28$ | $44$ | $2$ (Connaught, Noida) | $23$ | $3$ (AIIMS, Safdarjung, Max) | $28.6139^\circ\text{ N}, 77.2090^\circ\text{ E}$ |
-| **Bengaluru Tech Corridor** | $22$ | $34$ | $2$ (Electronic City, Manyata)| $17$ | $3$ (Manipal, Narayana, Aster) | $12.9716^\circ\text{ N}, 77.5946^\circ\text{ E}$ |
-| **Hyderabad Hi-Tech Network** | $20$ | $30$ | $2$ (HITEC City, Secunderabad)| $16$ | $2$ (Apollo, Yashoda) | $17.3850^\circ\text{ N}, 78.4867^\circ\text{ E}$ |
-| **Chennai Coastal Logistics** | $20$ | $30$ | $2$ (Chennai Port, Guindy) | $16$ | $2$ (Apollo Greams, MIOT) | $13.0827^\circ\text{ N}, 80.2707^\circ\text{ E}$ |
+| **Mumbai** | 25 | 38 | BKC, Thane | 20 | KEM, Lilavati, Fortis | 19.0760° N, 72.8777° E |
+| **Delhi NCR** | 28 | 44 | Connaught Place, Noida | 23 | AIIMS, Safdarjung, Max | 28.6139° N, 77.2090° E |
+| **Bengaluru** | 22 | 34 | Electronic City, Manyata | 17 | Manipal, Narayana, Aster | 12.9716° N, 77.5946° E |
+| **Hyderabad** | 20 | 30 | HITEC City, Secunderabad | 16 | Apollo, Yashoda | 17.3850° N, 78.4867° E |
+| **Chennai** | 20 | 30 | Chennai Port, Guindy | 16 | Apollo Greams, MIOT | 13.0827° N, 80.2707° E |
 
 ---
 
-## 6. System Modules & Features
-
-1. **Map Simulator**: Real Leaflet OpenStreetMap view with dynamic speed heatmaps, incident injection, route polylines, and live vehicle playback.
-2. **Algorithm Tournament Arena**: Side-by-side synchronized execution of 6 competing algorithms with real-time iteration logs and convergence metrics.
-3. **Routing Systems Lab**:
-   - D-Wave / Qiskit Ising & QUBO Matrix Formulation export ($H = \sum Q_{ij} x_i x_j$).
-   - Emergency Green-Wave signal preemption corridor.
-   - Indian Monsoon Hydrological potential barrier rerouting.
-   - Topological EV Energy Hamiltonian & aerodynamic platooning.
-   - Post-Quantum Cryptographic route sealing (NIST FIPS 204 ML-DSA-87 standard).
-4. **Benchmark Suite**: Monte Carlo statistical distributions ($N = 10 \dots 30$), Welch's two-sample $t$-tests ($p$-values), optimality gap evaluations, and COPERT emissions modeling.
-
----
-
-## 7. Getting Started
+## Quickstart
 
 ### Prerequisites
-- Node.js (v18.0.0 or higher)
-- npm (v9.0.0 or higher)
+- Node.js 18 or newer
+- npm 9 or newer
 
-### Installation & Run
+### Setup & Run
 ```bash
-# Clone repository
-git clone https://github.com/your-org/trafficweave.git
+# 1. Clone the repository
+git clone https://github.com/your-username/trafficweave.git
 cd trafficweave
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Launch development server
+# 3. Start the local dev server
 npm run dev
+```
 
-# Build production bundle
+Open `http://localhost:5173` in your browser.
+
+To create a production build:
+```bash
 npm run build
+npm run preview
 ```
 
 ---
 
-## 8. License & Research Citation
+## How the Code is Organized
 
-Academic & Enterprise Research License. Developed for technical benchmarking and smart-city logistics research.
+```
+trafficweave/
+├── src/
+│   ├── components/         # UI screens & interactive views
+│   │   ├── RealLeafletMap.tsx       # Live OpenStreetMap route & traffic view
+│   │   ├── TournamentArena.tsx      # Side-by-side multi-algorithm race
+│   │   ├── BenchmarkLab.tsx         # Monte Carlo, t-tests, scalability testing
+│   │   ├── BeforeVsAfterScreen.tsx  # Direct savings comparison screen
+│   │   ├── QuantumInnovationsLab.tsx# QUBO, Green Wave, Flood & PQC modules
+│   │   ├── QuantumVisualizer.tsx    # 3D Bloch sphere & wave function canvas
+│   │   ├── FleetControlPanel.tsx    # Objective weight sliders & fleet controls
+│   │   └── DeliverablesModal.tsx    # SIH deliverables compliance checklist
+│   ├── core/
+│   │   ├── algorithms/     # All optimization solvers
+│   │   │   ├── qpso.ts                # Quantum Particle Swarm Optimization
+│   │   │   ├── qga.ts                 # Quantum Genetic Algorithm
+│   │   │   ├── classicalPso.ts        # Classical PSO baseline
+│   │   │   ├── classicalGa.ts         # Classical GA (OX + 2-Opt)
+│   │   │   ├── simulatedAnnealing.ts  # Simulated Annealing
+│   │   │   ├── clarkeWright.ts        # Clarke-Wright heuristic
+│   │   │   ├── exactSolver.ts         # Branch-and-Bound exact solver
+│   │   │   └── benchmarkSuite.ts      # Statistical runner & t-test logic
+│   │   ├── formulations/   # Problem modeling & cost evaluation
+│   │   │   ├── vrpCostEvaluator.ts    # BPR travel time, CO2, and penalty evaluator
+│   │   │   └── decoder.ts             # Permutation decoder
+│   │   └── graph/          # Map graphs & traffic engine
+│   │       ├── graphGenerator.ts      # City presets (Mumbai, Delhi, Bengaluru, etc.)
+│   │       ├── trafficEngine.ts       # Dynamic congestion simulation
+│   │       └── shortestPath.ts        # Shortest path / Dijkstra routing
+│   ├── types/              # TypeScript types (graph, vehicle, solution)
+│   ├── App.tsx             # Main layout & simulation state
+│   └── index.css           # Styling
+```
+
+---
+
+## Tech Stack
+
+- **Framework**: React 19 + TypeScript (Vite)
+- **Map**: Leaflet & React-Leaflet (OpenStreetMap)
+- **Charts**: Chart.js & React-Chartjs-2
+- **Icons**: Lucide React
+- **Architecture**: 100% client-side computation (no external API keys or backend server required)
+
+---
+
+## License
+
+MIT License. Free to use and modify for research and educational purposes.
