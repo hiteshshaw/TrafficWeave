@@ -3,10 +3,6 @@
 **Smart delivery fleet routing for congested Indian cities.**  
 Plans fast, traffic-aware delivery routes across multiple depots using quantum-inspired swarm optimization (QPSO) to bypass rush-hour bottlenecks.
 
-> **Smart India Hackathon** | Problem Statement 26137 (Transportation & Logistics)
-
----
-
 ## What is TrafficWeave?
 
 Most navigation tools calculate the shortest path based on distance. In crowded Indian cities, the shortest road is often the one stuck in dead stop-and-go traffic. When managing a fleet of delivery vans across multiple warehouses, figuring out which vehicle should visit which stops while respecting truck weight capacities, customer delivery time windows, and live traffic jams is a classic NP-hard challenge (the Multi-Depot Capacitated Vehicle Routing Problem with Time Windows, or MD-CVRPTW).
